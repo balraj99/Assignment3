@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 
 public class Ping {
@@ -25,6 +26,15 @@ public class Ping {
             }
         }catch(IOException ex){
 
+            System.err.println("Exception occured");
+        }
+
+        System.out.println(result);
+
+        if(result == "" || result.contains("unknown host")){
+
+            System.err.println("Entered host is invalid");
+            return;
         }
 
         ArrayList<Double> list = new ArrayList<Double>();
@@ -62,6 +72,9 @@ public class Ping {
 
     public static void main(String[] args) {
 
-        pingIp("google.com");
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter host to ping");
+        String host = sc.next();
+        pingIp(host);
     }
 }
