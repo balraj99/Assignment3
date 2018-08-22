@@ -1,8 +1,8 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.ArrayList;
+
 
 public class Ping {
 
@@ -20,32 +20,44 @@ public class Ping {
 
             while((output = reader.readLine()) != null){
 
-                result = output;
+                result = result + "\n" + output;
                 System.out.println(output);
             }
         }catch(IOException ex){
 
         }
 
-        Pattern pattern = Pattern.compile("([0-9]+\\.[0-9]+)");
-        if(result != null){
+        ArrayList<Double> list = new ArrayList<Double>();
+        String[] str = result.split("\n");
 
-            Matcher matcher = pattern.matcher(result);
+        int len = str.length;
+        for(int i = 0; i < len; i++){
+            if(str[i].contains("time=")){
 
-            int count = 0;
-            while(matcher.find()){
-
-                count++;
-                if(count == 2) {
-
-                    result = matcher.group();
-                    break;
-                }
+                String s = str[i].split("time=")[1];
+                s = s.replace("ms", "").trim();
+                //System.out.println("String s  = " + s);
+                list.add(Double.valueOf(s));
             }
-
         }
 
-        System.out.println("\nMedian time taken for ping = " + result);
+        list.sort(null);
+
+       /* for(int i = 0; i < list.size(); i++) {
+            System.out.println(list.get(i));
+        }*/
+
+        int n = list.size();
+
+        if(n % 2 != 0){
+
+            System.out.println("Median Value = " + list.get(n / 2));
+        }
+        else {
+
+            double val = list.get((n - 1) / 2) + list.get(n / 2);
+            System.out.println("Median Value = " + val / 2);
+        }
     }
 
     public static void main(String[] args) {
